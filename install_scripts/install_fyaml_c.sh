@@ -16,7 +16,7 @@ cd fyaml
 
 mkdir build
 cd build
-FC=${FC} CC=${CC} CXX=${CXX} cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -DBUILD_SHARED_LIBS=Yes ..
+cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -DBUILD_SHARED_LIBS=Yes ..
 cmake --build .
 cmake --install .
 
