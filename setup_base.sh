@@ -1,7 +1,7 @@
 
 
-export INSTALL_DIR=
-export BUILD_DIR=.
+export INSTALL_DIR=$HOME/test_install_ccs
+export BUILD_DIR=$HOME/test_build_ccs
 
 
 export PATH=$PATH:$INSTALL_DIR/makedepf90/bin
@@ -10,8 +10,8 @@ export PYTHONPATH=$PYTHONPATH:$INSTALL_DIR/python-$CMP
 export PATH=$PATH:$INSTALL_DIR/python-$CMP/bin
 export PYTHONUSERBASE=$INSTALL_DIR/python-$CMP
 
-export PETSC_DIR=$INSTALL_DIR/petsc-$CMP
-export LD_LIBRARY_PATH=$PETSC_DIR/lib:$LD_LIBRARY_PATH
+export PETSC=$INSTALL_DIR/petsc-$CMP
+export LD_LIBRARY_PATH=$PETSC/lib:$LD_LIBRARY_PATH
 
 export FYAML=$INSTALL_DIR/fyaml-$CMP
 export FYAMLC=$INSTALL_DIR/fyaml-c-$CMP

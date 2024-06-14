@@ -11,4 +11,6 @@ cd makedepf90
 ./configure --prefix=$INSTALL_DIR
 
 make
-make install
+#make install
+mkdir -p $INSTALL_DIR/bin
+cp makedepf90 $INSTALL_DIR/bin

@@ -1,6 +1,13 @@
 set -e
 
 source setup_${CMP}.sh
+module unload petsc
+unset HDF5_ROOT
+unset HDF5_DIR
+
+unset PETSC_ROOT
+unset PETSC_DIR
+
 INSTALL_DIR=$FYAMLC
 cd $BUILD_DIR
 
