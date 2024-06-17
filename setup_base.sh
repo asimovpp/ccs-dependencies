@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export INSTALL_DIR=$HOME/test_install_ccs
-export BUILD_DIR=$HOME/test_build_ccs
+export INSTALL_DIR=
+export BUILD_DIR=build/
 
 export ADIOS2_VERSION=2.10.1
 export PARHIP_VERSION=3.14
