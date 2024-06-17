@@ -12,10 +12,10 @@ BUILD_DIR=$HOME/ccs-libs-build
 
 - Build and install the dependencies:
 ```
-CMP=cray_A2 ./install_base.sh
+ENV=cray_A2 ./install_base.sh
 ```
 
-Set CMP according to your platform and desired build environment. The possible values each have a file names `setup_$CMP.sh` in the root folder of this repo.
+Set ENV according to your platform and desired build environment. The possible values each have a file names `setup_$ENV.sh` in the root folder of this repo.
 
 ## Setup
 
