@@ -5,9 +5,8 @@ source setup_$CMP.sh
 INSTALL_DIR=$ADIOS2
 cd $BUILD_DIR
 
-git clone https://github.com/ornladios/ADIOS2.git adios2
+git clone --depth 1 --branch v$ADIOS2_VERSION https://github.com/ornladios/ADIOS2.git adios2
 cd adios2
-git checkout tags/v2.8.3
 mkdir build
 cd build
 cmake -DCMAKE_C_COMPILER=${CC} \

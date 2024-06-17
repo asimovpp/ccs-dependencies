@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
-source setup_$CMP.sh
+
+export CMP=${ENV/_*/}
+source setup_$ENV.sh
 
 mkdir -p $BUILD_DIR
 mkdir -p $INSTALL_DIR

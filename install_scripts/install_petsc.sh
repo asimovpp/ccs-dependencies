@@ -6,7 +6,7 @@ source setup_$CMP.sh
 INSTALL_DIR=$PETSC
 cd $BUILD_DIR
 
-git clone --depth 1 --branch release https://github.com/petsc/petsc.git
+git clone --depth 1 --branch v$PETSC_VERSION https://github.com/petsc/petsc.git
 cd petsc
 export PETSC_DIR=$(pwd)
 

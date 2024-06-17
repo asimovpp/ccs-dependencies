@@ -1,8 +1,12 @@
-
+#!/bin/bash
 
 export INSTALL_DIR=$HOME/test_install_ccs
 export BUILD_DIR=$HOME/test_build_ccs
 
+export ADIOS2_VERSION=2.10.1
+export PARHIP_VERSION=3.14
+export PETSC_VERSION=3.21.2
+export HDF5_VERSION=1.14.4.3
 
 export PATH=$PATH:$INSTALL_DIR/makedepf90/bin
 
@@ -10,16 +14,16 @@ export PYTHONPATH=$PYTHONPATH:$INSTALL_DIR/python-$CMP
 export PATH=$PATH:$INSTALL_DIR/python-$CMP/bin
 export PYTHONUSERBASE=$INSTALL_DIR/python-$CMP
 
-export PETSC=$INSTALL_DIR/petsc-$CMP
+export PETSC=$INSTALL_DIR/petsc-$CMP-v$PETSC_VERSION
 export LD_LIBRARY_PATH=$PETSC/lib:$LD_LIBRARY_PATH
 
 export FYAML=$INSTALL_DIR/fyaml-$CMP
 export FYAMLC=$INSTALL_DIR/fyaml-c-$CMP
   
-export ADIOS2=$INSTALL_DIR/adios2-$CMP
-export HDF5_ROOT=$INSTALL_DIR/hdf5-$CMP
+export ADIOS2=$INSTALL_DIR/adios2-$CMP-v$ADIOS2_VERSION
+export HDF5_ROOT=$INSTALL_DIR/hdf5-$CMP-v$HDF5_VERSION
 
-export PARHIP=$INSTALL_DIR/parhip-$CMP
+export PARHIP=$INSTALL_DIR/parhip-$CMP-v$PARHIP_VERSION
 export LD_LIBRARY_PATH=$PARHIP/lib:$LD_LIBRARY_PATH
   
 export PARMETIS=$INSTALL_DIR/parmetis-$CMP

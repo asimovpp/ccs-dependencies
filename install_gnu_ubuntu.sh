@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source setup_$CMP.sh
+source setup_$ENV.sh
 sudo apt install yacc flex
 sudo apt install cmake
 sudo apt install openmpi-bin libopenmpi-dev

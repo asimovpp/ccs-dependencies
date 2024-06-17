@@ -5,9 +5,8 @@ source setup_$CMP.sh
 INSTALL_DIR=$HDF5_ROOT
 cd $BUILD_DIR
 
-git clone https://github.com/HDFGroup/hdf5.git
+git clone --depth 1 --branch hdf5_$HDF5_VERSION https://github.com/HDFGroup/hdf5.git
 cd hdf5
-git checkout tags/hdf5-1_12_1
 
 ./configure --enable-parallel --prefix=$INSTALL_DIR
 make -j 16
