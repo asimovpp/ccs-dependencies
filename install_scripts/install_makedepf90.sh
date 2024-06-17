@@ -3,7 +3,7 @@ set -e
 source setup_$CMP.sh
 
 INSTALL_DIR=$MAKEDEPF90
-cd $BUILD_DIR
+cd "$BUILD_DIR"
 
 git clone https://salsa.debian.org/science-team/makedepf90.git
 
@@ -14,3 +14,6 @@ make
 #make install
 mkdir -p $INSTALL_DIR/bin
 cp makedepf90 $INSTALL_DIR/bin
+cd ..
+rm -rf makedepf90
+
