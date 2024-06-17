@@ -1,6 +1,6 @@
 set -e
 
-source setup_$CMP.sh
+source setup_$ENV.sh
 
 INSTALL_DIR=$MAKEDEPF90
 cd "$BUILD_DIR"

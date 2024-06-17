@@ -1,6 +1,6 @@
 set -e
 
-source setup_$CMP.sh
+source setup_$ENV.sh
 
 INSTALL_DIR=$ADIOS2
 cd $BUILD_DIR

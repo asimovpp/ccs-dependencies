@@ -1,6 +1,6 @@
 set -e
 
-source setup_${CMP}.sh
+source setup_${ENV}.sh
 INSTALL_DIR=$PARMETIS
 cp patch/gklib_force_fpic.patch $BUILD_DIR/
 cd $BUILD_DIR

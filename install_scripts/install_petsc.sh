@@ -1,7 +1,7 @@
 set -e
 
 
-source setup_$CMP.sh
+source setup_$ENV.sh
 
 INSTALL_DIR=$PETSC
 cd $BUILD_DIR
