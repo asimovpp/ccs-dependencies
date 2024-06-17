@@ -15,7 +15,7 @@ BUILD_DIR=$HOME/ccs-libs-build
 ENV=cray_A2 ./install_base.sh
 ```
 
-Set ENV according to your platform and desired build environment. The possible values each have a file names `setup_$ENV.sh` in the root folder of this repo.
+Set ENV according to your platform and desired build environment. The possible values each have a file named `setup_$ENV.sh` in the root folder of this repo.
 
 ## Setup
 
