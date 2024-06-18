@@ -30,3 +30,4 @@ cd ..
 
 cd ..
 rm -rf parmetis
+rm $BUILD_DIR/gklib_force_fpic.patch
