@@ -7,7 +7,7 @@ Set of scripts to build CCS dependencies on various systems
 - First setup the `INSTALL_DIR` and `BUILD_DIR` variables in `setup_base.sh` for example
 ```bash
 INSTALL_DIR=$HOME/ccs-libs
-BUILD_DIR=$HOME/ccs-libs-build
+BUILD_DIR=/tmp/build-ccs-deps/
 ```
 
 - Build and install the dependencies:
