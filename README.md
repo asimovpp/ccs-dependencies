@@ -2,7 +2,7 @@
 Set of scripts to build CCS dependencies on various systems
 
 
-## Build/installation
+## Build dependencies
 
 - First setup the `INSTALL_DIR` and `BUILD_DIR` variables in `setup_base.sh` for example
 ```bash
