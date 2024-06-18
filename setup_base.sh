@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export INSTALL_DIR=$HOME/ccs-libs/
-export BUILD_DIR=/tmp/build/
+export INSTALL_DIR=
+export BUILD_DIR=/tmp/build-ccs-deps/
 
 export ADIOS2_VERSION=2.10.1
 export PARHIP_VERSION=3.14
