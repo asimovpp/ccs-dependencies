@@ -17,7 +17,7 @@ ENV=cray_A2 ./install_base.sh
 
 Set ENV according to your platform and desired build environment. The possible values each have a file named `setup_$ENV.sh` in the root folder of this repo.
 
-## Building ccs
+## Build ccs
 
 Once all the libraries have been installed, you just need to source the right setup script to build ccs, for example:
 ```
