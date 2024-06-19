@@ -1,6 +1,6 @@
 
 export CMP=gnu
-source setup_base.sh
+source "$(dirname $0)"/setup_base.sh
 
 module load PrgEnv-gnu
 module load cray-python
