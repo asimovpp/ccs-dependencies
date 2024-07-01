@@ -7,6 +7,7 @@ source setup_$ENV.sh
 mkdir -p $BUILD_DIR
 mkdir -p $INSTALL_DIR
 
+bash install_scripts/install_python_pyyaml_lit.sh
 bash install_scripts/install_makedepf90.sh
 bash install_scripts/install_fyaml_c.sh
 bash install_scripts/install_hdf5.sh
