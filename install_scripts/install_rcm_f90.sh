@@ -7,7 +7,7 @@ INSTALL_DIR=${RCMF90}
 cd $BUILD_DIR
 
 # Get code
-git clone --depth 1 git@git.ecdf.ed.ac.uk:asimov/rcm-f90.git rcm-f90
+git clone --depth 1 git@github.com:asimovpp/RCM-f90.git rcm-f90
 cd rcm-f90
 
 # Build
