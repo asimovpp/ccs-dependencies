@@ -1,6 +1,6 @@
 
 export CMP=cray
-source "$(dirname $0)"/setup_base.sh
+source "$(dirname ${BASH_SOURCE[0]:-$0})"/setup_base.sh
 
 module load PrgEnv-cray craype-network-ofi craype-x86-rome
 module load cray-python
