@@ -10,8 +10,8 @@ import logging
 import json
 import importlib.util
 from pathlib import Path
-from utils.environment import Environment
-from utils.system import detect_system
+from ccs_dep.utils.environment import Environment
+from ccs_dep.utils.system import detect_system
 
 
 def main():
@@ -49,9 +49,9 @@ def main():
     
     # Override with command line arguments
     if args.install_dir:
-        config["install_dir"] = args.install_dir
+        config["install_dir"] = str(Path(args.install_dir).expanduser())
     if args.build_dir:
-        config["build_dir"] = args.build_dir
+        config["build_dir"] = str(Path(args.build_dir).expanduser())
     
     # Set up environment
     env = Environment(env_name, config)
@@ -74,7 +74,7 @@ def main():
         
         for key, value in env_vars.items():
             # Handle special characters in the value
-            value_escaped = value.replace('"', '\\"')
+            value_escaped = str(value).replace('"', '\\"')
             print(f'export {key}="{value_escaped}"')
 
 
@@ -82,13 +82,13 @@ def show_version_info():
     """
     Display version information for the CCS dependencies setup
     """
-    # Try to get version from pyproject.toml using Poetry metadata
+    # Try to get version from package
     try:
-        from importlib.metadata import version
-        print(f"CCS Dependencies Setup v{version('ccs-dependencies')}")
+        from ccs_dep import __version__
+        print(f"CCS Dependencies Setup v{__version__}")
     except (ImportError, ModuleNotFoundError):
         # Fallback if not installed with Poetry
-        print("CCS Dependencies Setup")
+        print("CCS Dependencies Setup v0.1.0")
     
     print("Python version:", sys.version)
     print("Platform:", sys.platform)
@@ -120,16 +120,15 @@ def load_configuration(env_name, custom_config=None):
     Returns:
         dict: Configuration dictionary
     """
-    # Current script directory - handle both direct execution and installed package
-    try:
-        # If running as an installed package
-        import ccs_dependencies
-        package_dir = Path(ccs_dependencies.__file__).parent
-        config_dir = package_dir / "config"
-    except ImportError:
-        # If running directly from source
-        script_dir = Path(__file__).parent
-        config_dir = script_dir / "config"
+    # Get the configuration directory - first check the repo root (the original location)
+    script_dir = Path(__file__).parent
+    base_dir = script_dir.parent  # This would be ccs-dependencies root
+    config_dir = base_dir / "config"
+    
+    # Check if config directory exists
+    if not config_dir.exists():
+        print(f"Error: Configuration directory not found: {config_dir}", file=sys.stderr)
+        sys.exit(1)
     
     # Load default configuration
     default_config_path = config_dir / "default_config.yml"
@@ -149,11 +148,13 @@ def load_configuration(env_name, custom_config=None):
             config = merge_configs(config, env_config)
     
     # Load custom configuration if specified
-    if custom_config and os.path.exists(custom_config):
-        with open(custom_config, "r") as f:
-            custom_config_data = yaml.safe_load(f)
-            # Merge configurations
-            config = merge_configs(config, custom_config_data)
+    if custom_config:
+        custom_config_path = Path(custom_config)
+        if custom_config_path.exists():
+            with custom_config_path.open("r") as f:
+                custom_config_data = yaml.safe_load(f)
+                # Merge configurations
+                config = merge_configs(config, custom_config_data)
     
     return config
 

@@ -1,6 +1,6 @@
 # Default configuration for CCS dependencies
 install_dir: ~/ccs-deps
-build_dir: /tmp/build-ccs-deps
+# build_dir will be determined at runtime using tempfile.gettempdir()
 
 # Dependency versions
 dependencies:
@@ -13,7 +13,9 @@ dependencies:
   hdf5:
     version: 1.14.4.3
   fyaml_c:
-    version: 0.2.5
+    version: 0.2.6
+  rcm_f90:
+    version: 1.0.0
 
 # Default installation order
 installation_order:

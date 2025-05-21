@@ -5,6 +5,7 @@ System detection utilities for CCS dependencies
 import platform
 import os
 import logging
+from pathlib import Path
 
 
 def detect_system():
@@ -26,8 +27,9 @@ def detect_system():
             distname = distro.id().lower()
         except ImportError:
             # Fallback if distro module is not available
-            if os.path.exists("/etc/os-release"):
-                with open("/etc/os-release") as f:
+            os_release_path = Path("/etc/os-release")
+            if os_release_path.exists():
+                with os_release_path.open() as f:
                     for line in f:
                         if line.startswith("ID="):
                             distname = line.split("=")[1].strip().strip('"').lower()
@@ -38,7 +40,7 @@ def detect_system():
         # Check for specific distributions
         if distname in ["ubuntu", "debian"]:
             return "gnu_ubuntu"
-        elif "cray" in platform.version().lower() or os.path.exists("/opt/cray"):
+        elif "cray" in platform.version().lower() or Path("/opt/cray").exists():
             return "cray_A2"
     
     # Default to gnu_ubuntu if we can't determine the system

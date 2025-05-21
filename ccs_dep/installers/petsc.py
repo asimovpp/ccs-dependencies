@@ -4,8 +4,9 @@ PETSc installer for CCS dependencies
 """
 import os
 import logging
-from installers.base import BaseInstaller
-from utils.command import run_command, clone_repository
+from pathlib import Path
+from ccs_dep.installers.base import BaseInstaller
+from ccs_dep.utils.command import run_command, clone_repository
 
 
 class PetscInstaller(BaseInstaller):
@@ -20,21 +21,24 @@ class PetscInstaller(BaseInstaller):
         os.chdir(self.build_dir)
         
         # Clone PETSc repository
+        source_dir = Path(self.source_dir)
         clone_repository(
             url="https://github.com/petsc/petsc.git",
+            directory=source_dir,
             branch=f"v{self.version}",
             depth=1
         )
         
         # Set PETSC_DIR environment variable
-        os.environ["PETSC_DIR"] = self.source_dir
+        os.environ["PETSC_DIR"] = str(source_dir)
     
     def configure(self):
         """
         Configure PETSc build
         """
         logging.info("Configuring PETSc")
-        os.chdir(self.source_dir)
+        source_dir = Path(self.source_dir)
+        os.chdir(source_dir)
         
         # Get compiler variables
         cc = self.env_vars.get("CC", "mpicc")
@@ -51,13 +55,16 @@ class PetscInstaller(BaseInstaller):
             "--with-debugging=1"
         ])
         
+        # Convert install dir to Path and get string representation
+        install_dir = Path(self.dep_install_dir)
+        
         # Build configure command
         cmd = [
             "./configure",
             f"--with-cc={cc}",
             f"--with-cxx={cxx}",
             f"--with-fc={fc}",
-            f"--prefix={self.dep_install_dir}"
+            f"--prefix={install_dir}"
         ]
         cmd.extend(configure_options)
         
@@ -69,7 +76,8 @@ class PetscInstaller(BaseInstaller):
         Build PETSc
         """
         logging.info("Building PETSc")
-        os.chdir(self.source_dir)
+        source_dir = Path(self.source_dir)
+        os.chdir(source_dir)
         
         # Run make
         run_command(["make", f"-j{self.parallel_jobs}"])
@@ -79,7 +87,8 @@ class PetscInstaller(BaseInstaller):
         Install PETSc
         """
         logging.info("Installing PETSc")
-        os.chdir(self.source_dir)
+        source_dir = Path(self.source_dir)
+        os.chdir(source_dir)
         
         # Run make install
         run_command(["make", "install"])

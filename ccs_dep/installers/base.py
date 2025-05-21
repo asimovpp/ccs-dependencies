@@ -5,7 +5,7 @@ Base installer class for CCS dependencies
 import os
 import logging
 import shutil
-from utils.command import run_command
+from pathlib import Path
 
 
 class BaseInstaller:
@@ -38,19 +38,15 @@ class BaseInstaller:
         if not self.dep_install_dir:
             logging.warning(f"Install directory not found for {self.name}")
             compiler_type = self.env_vars.get("CMP", "unknown")
+            install_dir_path = Path(self.install_dir)
             if self.version:
-                self.dep_install_dir = os.path.join(
-                    self.install_dir, 
-                    f"{self.name}-{compiler_type}-v{self.version}"
-                )
+                self.dep_install_dir = str(install_dir_path / f"{self.name}-{compiler_type}-v{self.version}")
             else:
-                self.dep_install_dir = os.path.join(
-                    self.install_dir, 
-                    f"{self.name}-{compiler_type}"
-                )
+                self.dep_install_dir = str(install_dir_path / f"{self.name}-{compiler_type}")
         
         # Set up source directory (where the source code will be downloaded)
-        self.source_dir = os.path.join(self.build_dir, self.name)
+        build_dir_path = Path(self.build_dir)
+        self.source_dir = str(build_dir_path / self.name)
         
         # Get dependency-specific configuration
         self.dep_config = self.config.get("dependencies", {}).get(self.name, {})
@@ -62,18 +58,21 @@ class BaseInstaller:
         logging.info(f"Preparing build environment for {self.name}")
         
         # Create build directory
-        os.makedirs(self.build_dir, exist_ok=True)
+        build_dir_path = Path(self.build_dir)
+        build_dir_path.mkdir(parents=True, exist_ok=True)
         
         # Create install directory
-        os.makedirs(self.dep_install_dir, exist_ok=True)
+        install_dir_path = Path(self.dep_install_dir)
+        install_dir_path.mkdir(parents=True, exist_ok=True)
         
         # Change to build directory
-        os.chdir(self.build_dir)
+        os.chdir(build_dir_path)
         
         # Remove existing source directory if it exists
-        if os.path.exists(self.source_dir):
-            logging.info(f"Removing existing source directory: {self.source_dir}")
-            shutil.rmtree(self.source_dir)
+        source_dir_path = Path(self.source_dir)
+        if source_dir_path.exists():
+            logging.info(f"Removing existing source directory: {source_dir_path}")
+            shutil.rmtree(source_dir_path)
     
     def download(self):
         """
@@ -104,9 +103,12 @@ class BaseInstaller:
         Clean up build directory
         """
         logging.info(f"Cleaning up build directory for {self.name}")
-        os.chdir(self.build_dir)
-        if os.path.exists(self.source_dir):
-            shutil.rmtree(self.source_dir)
+        build_dir_path = Path(self.build_dir)
+        os.chdir(str(build_dir_path))
+        
+        source_dir_path = Path(self.source_dir)
+        if source_dir_path.exists():
+            shutil.rmtree(source_dir_path)
     
     def run(self):
         """

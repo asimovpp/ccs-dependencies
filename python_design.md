@@ -139,9 +139,10 @@ import os
 import sys
 import yaml
 import logging
-from utils.environment import Environment
-from utils.system import detect_system
+from ccs_dep.utils.environment import Environment
+from ccs_dep.utils import detect_system
 import importlib
+
 
 def main():
     # Parse command line arguments
@@ -153,34 +154,34 @@ def main():
     parser.add_argument("--debug", action="store_true", help="Enable debug output")
     parser.add_argument("--dependencies", default=None, help="Comma-separated list of dependencies to install")
     args = parser.parse_args()
-    
+
     # Configure logging
     log_level = logging.DEBUG if args.debug else logging.INFO
     logging.basicConfig(level=log_level, format="%(asctime)s - %(levelname)s - %(message)s")
-    
+
     # Detect system if environment not specified
     env_name = args.env
     if not env_name:
         env_name = detect_system()
         logging.info(f"Detected environment: {env_name}")
-    
+
     # Load configuration
     config = load_configuration(env_name, args.config)
-    
+
     # Override with command line arguments
     if args.install_dir:
         config["install_dir"] = args.install_dir
     if args.build_dir:
         config["build_dir"] = args.build_dir
-    
+
     # Set up environment
     env = Environment(env_name, config)
     env.apply()
-    
+
     # Create install and build directories
     os.makedirs(env.get_install_dir(), exist_ok=True)
     os.makedirs(env.get_build_dir(), exist_ok=True)
-    
+
     # Determine which dependencies to install
     all_deps = config.get("installation_order", [])
     deps_to_install = all_deps
@@ -192,7 +193,7 @@ def main():
                 logging.error(f"Unknown dependency: {dep}")
                 logging.error(f"Available dependencies: {', '.join(all_deps)}")
                 sys.exit(1)
-    
+
     # Install dependencies
     results = {}
     for dep in deps_to_install:
@@ -207,11 +208,12 @@ def main():
         except Exception as e:
             logging.error(f"Error installing {dep}: {e}")
             results[dep] = "ERROR"
-    
+
     # Print summary
     logging.info("Installation summary:")
     for dep, status in results.items():
         logging.info(f"  {dep}: {status}")
+
 
 def load_configuration(env_name, custom_config=None):
     """Load configuration for the specified environment"""
@@ -220,10 +222,10 @@ def load_configuration(env_name, custom_config=None):
     if not os.path.exists(default_config_path):
         logging.error(f"Default configuration file not found: {default_config_path}")
         sys.exit(1)
-    
+
     with open(default_config_path, "r") as f:
         config = yaml.safe_load(f)
-    
+
     # Load environment-specific configuration
     env_config_path = os.path.join("config", f"{env_name}.yml")
     if os.path.exists(env_config_path):
@@ -231,15 +233,16 @@ def load_configuration(env_name, custom_config=None):
             env_config = yaml.safe_load(f)
             # Merge configurations
             config = merge_configs(config, env_config)
-    
+
     # Load custom configuration if specified
     if custom_config and os.path.exists(custom_config):
         with open(custom_config, "r") as f:
             custom_config_data = yaml.safe_load(f)
             # Merge configurations
             config = merge_configs(config, custom_config_data)
-    
+
     return config
+
 
 def merge_configs(base_config, override_config):
     """Recursively merge two configuration dictionaries"""
@@ -250,6 +253,7 @@ def merge_configs(base_config, override_config):
         else:
             result[key] = value
     return result
+
 
 if __name__ == "__main__":
     main()
@@ -316,8 +320,9 @@ dependencies:
 ```python
 import os
 import logging
-from installers.base import BaseInstaller
-from utils.command import run_command
+from ccs_dep.installers import BaseInstaller
+from ccs_dep.utils import run_command
+
 
 class Hdf5Installer(BaseInstaller):
     def __init__(self, config, env):
@@ -325,33 +330,33 @@ class Hdf5Installer(BaseInstaller):
         self.version = self.env.get_env_vars().get("HDF5_VERSION")
         self.install_dir = self.env.get_env_vars().get("HDF5_ROOT")
         self.source_dir = os.path.join(self.build_dir, "hdf5")
-        
+
     def download(self):
         logging.info(f"Downloading HDF5 version {self.version}")
         os.chdir(self.build_dir)
         run_command(
-            ["git", "clone", "--depth", "1", 
-             "--branch", f"hdf5_{self.version}", 
+            ["git", "clone", "--depth", "1",
+             "--branch", f"hdf5_{self.version}",
              "https://github.com/HDFGroup/hdf5.git"]
         )
-        
+
     def configure(self):
         logging.info("Configuring HDF5")
         os.chdir(self.source_dir)
         run_command(
             ["./configure", "--enable-parallel", f"--prefix={self.install_dir}"]
         )
-        
+
     def build(self):
         logging.info("Building HDF5")
         os.chdir(self.source_dir)
         run_command(["make", f"-j{self.config.get('parallel_jobs', 16)}"])
-        
+
     def install(self):
         logging.info("Installing HDF5")
         os.chdir(self.source_dir)
         run_command(["make", "install"])
-        
+
     def cleanup(self):
         logging.info("Cleaning up HDF5 build directory")
         os.chdir(self.build_dir)

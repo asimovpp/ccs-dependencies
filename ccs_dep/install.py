@@ -10,8 +10,8 @@ import logging
 import importlib
 import importlib.util
 from pathlib import Path
-from utils.environment import Environment
-from utils.system import detect_system
+from ccs_dep.utils.environment import Environment
+from ccs_dep.utils.system import detect_system
 
 
 def main():
@@ -58,9 +58,9 @@ def main():
     
     # Override with command line arguments
     if args.install_dir:
-        config["install_dir"] = args.install_dir
+        config["install_dir"] = str(Path(args.install_dir).expanduser())
     if args.build_dir:
-        config["build_dir"] = args.build_dir
+        config["build_dir"] = str(Path(args.build_dir).expanduser())
     
     # Set up environment
     env = Environment(env_name, config)
@@ -70,8 +70,10 @@ def main():
     env.print_environment()
     
     # Create install and build directories
-    os.makedirs(env.get_install_dir(), exist_ok=True)
-    os.makedirs(env.get_build_dir(), exist_ok=True)
+    install_dir = Path(env.get_install_dir())
+    build_dir = Path(env.get_build_dir())
+    install_dir.mkdir(parents=True, exist_ok=True)
+    build_dir.mkdir(parents=True, exist_ok=True)
     
     # Determine which dependencies to install
     all_deps = config.get("installation_order", [])
@@ -92,7 +94,7 @@ def main():
         try:
             # Dynamically import installer module
             try:
-                installer_module = importlib.import_module(f"installers.{dep}")
+                installer_module = importlib.import_module(f"ccs_dep.installers.{dep}")
                 # Get the installer class name (capitalize the dependency name)
                 class_name = "".join(word.capitalize() for word in dep.split("_")) + "Installer"
                 installer_class = getattr(installer_module, class_name)
@@ -116,13 +118,12 @@ def show_version_info():
     """
     Display version information for the CCS dependencies installer
     """
-    # Try to get version from pyproject.toml using Poetry metadata
     try:
-        from importlib.metadata import version
-        print(f"CCS Dependencies Installer v{version('ccs-dependencies')}")
+        from ccs_dep import __version__
+        print(f"CCS Dependencies Installer v{__version__}")
     except (ImportError, ModuleNotFoundError):
         # Fallback if not installed with Poetry
-        print("CCS Dependencies Installer")
+        print("CCS Dependencies Installer v0.1.0")
     
     print("Python version:", sys.version)
     print("Platform:", sys.platform)
@@ -154,16 +155,15 @@ def load_configuration(env_name, custom_config=None):
     Returns:
         dict: Configuration dictionary
     """
-    # Current script directory - handle both direct execution and installed package
-    try:
-        # If running as an installed package
-        import ccs_dependencies
-        package_dir = Path(ccs_dependencies.__file__).parent
-        config_dir = package_dir / "config"
-    except ImportError:
-        # If running directly from source
-        script_dir = Path(__file__).parent
-        config_dir = script_dir / "config"
+    # Get the configuration directory - first check the repo root (the original location)
+    script_dir = Path(__file__).parent
+    base_dir = script_dir.parent  # This would be ccs-dependencies root
+    config_dir = base_dir / "config"
+    
+    # Check if config directory exists
+    if not config_dir.exists():
+        logging.error(f"Configuration directory not found: {config_dir}")
+        sys.exit(1)
     
     # Load default configuration
     default_config_path = config_dir / "default_config.yml"
@@ -185,11 +185,13 @@ def load_configuration(env_name, custom_config=None):
         logging.warning(f"Environment-specific configuration not found: {env_config_path}")
     
     # Load custom configuration if specified
-    if custom_config and os.path.exists(custom_config):
-        with open(custom_config, "r") as f:
-            custom_config_data = yaml.safe_load(f)
-            # Merge configurations
-            config = merge_configs(config, custom_config_data)
+    if custom_config:
+        custom_config_path = Path(custom_config)
+        if custom_config_path.exists():
+            with custom_config_path.open("r") as f:
+                custom_config_data = yaml.safe_load(f)
+                # Merge configurations
+                config = merge_configs(config, custom_config_data)
     
     return config
 

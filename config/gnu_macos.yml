@@ -3,6 +3,8 @@ cc: mpicc
 cxx: mpicxx
 fc: mpifort
 
+install_dir: ~/Development/ccs-libs
+
 # Override dependency-specific settings if needed
 dependencies:
   petsc:

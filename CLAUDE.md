@@ -26,11 +26,13 @@ The Python-based installation uses [Poetry](https://python-poetry.org/) for depe
 ### Directory Structure
 
 - `config/` - YAML configuration files for different environments
-- `installers/` - Python modules for installing dependencies
-- `utils/` - Utility modules for commands, environment setup, etc.
-- `install.py` - Main installation script (Poetry entry point: `ccs-install`)
-- `setup.py` - Environment configuration script (Poetry entry point: `ccs-setup`)
+- `ccs_dep/` - Python package containing:
+  - `installers/` - Python modules for installing dependencies
+  - `utils/` - Utility modules for commands, environment setup, etc.
+  - `install.py` - Main installation script (Poetry entry point: `ccs-install`)
+  - `setup.py` - Environment configuration script (Poetry entry point: `ccs-setup`)
 - `pyproject.toml` - Poetry configuration file
+- `tests/` - Test modules for installers and utilities
 
 ### Configuration System
 
@@ -40,6 +42,25 @@ The Python system uses YAML files for configuration:
 - `config/gnu_macos.yml` - macOS-specific configuration
 - `config/gnu_ubuntu.yml` - Ubuntu-specific configuration
 - `config/cray_A2.yml` - Cray-specific configuration
+
+### Build Directory
+
+The Python implementation determines the build directory in a cross-platform way using `tempfile.gettempdir()`. This ensures that the build directory is placed appropriately:
+
+- On Linux: typically `/tmp`
+- On macOS: typically `/var/folders/...`
+- On Windows: typically `C:\Users\<username>\AppData\Local\Temp`
+- On BSD: typically `/tmp`
+
+### Required Dependencies
+
+The following Python packages are required:
+
+- `pyyaml` - For YAML configuration file parsing
+- `distro` - For system distribution detection
+- `poetry-core` - For Poetry integration
+- `cmake` - For building some dependencies
+- `gitpython` - For Git repository operations
 
 ### Commands
 
@@ -60,6 +81,13 @@ poetry run ccs-install --dependencies hdf5,petsc
 
 # Configure environment for building CCS
 eval $(poetry run ccs-setup --env gnu_macos)
+
+# Show version information
+poetry run ccs-install --version
+poetry run ccs-setup --version
+
+# Debug mode for troubleshooting
+poetry run ccs-install --debug
 ```
 
 Without Poetry:
@@ -117,6 +145,7 @@ The default dependency versions (defined in both `setup_base.sh` and `config/def
 - PETSc: 3.21.2
 - HDF5: 1.14.4.3
 - FYAML-C: 0.2.5
+- RCM-f90: 1.0.0
 
 ## Building CCS After Dependencies
 
@@ -190,3 +219,57 @@ For developers working on extending the Python-based installation system:
 2. Run the commands directly: `ccs-install --debug`
 3. Run code formatting: `poetry run black .` 
 4. Run linting: `poetry run pylint installers utils`
+
+## Testing
+
+The repository includes a test suite for the installer modules. These tests use ephemeral sandboxes to ensure complete isolation and cleanup.
+
+### Running Tests
+
+```bash
+# Run all installer tests with Poetry
+poetry run pytest tests/
+
+# Run a specific installer test
+poetry run pytest tests/test_hdf5_installer.py
+
+# Run tests with the test runner script
+poetry run python tests/run_installer_tests.py
+
+# Run tests with more detailed output
+poetry run pytest -xvs tests/
+```
+
+### Test Structure
+
+- `tests/test_installers_base.py` - Base test class with common functionality
+- `tests/test_hdf5_installer.py` - Tests for HDF5 installer
+- `tests/test_parmetis_installer.py` - Tests for ParMETIS installer
+- `tests/test_petsc_installer.py` - Tests for PETSc installer
+- `tests/run_installer_tests.py` - Script to run all installer tests
+
+The tests are designed to be completely ephemeral:
+- Each test creates temporary build and install directories
+- External dependencies (Git, command execution) are mocked
+- All temporary resources are cleaned up after the tests run
+- No actual building or installation occurs during testing
+
+### Adding New Tests
+
+To add tests for a new installer:
+
+1. Create a new test file in the `tests/` directory
+2. Extend the `BaseInstallerTest` class
+3. Implement test methods for each phase of installation
+4. Update `run_installer_tests.py` to include the new test file
+
+## Error Handling
+
+The Python implementation includes improved error handling:
+- Type conversion for environment variables (ensuring all values are strings)
+- Cross-platform temporary directory detection
+- Clear error messages for configuration and dependency issues 
+- Debug mode for troubleshooting with `--debug` flag
+- Robust Git operations with GitPython for repository cloning
+- Fallback mechanisms for download operations (wget, curl, Python urllib)
+- Path handling with pathlib for cross-platform compatibility

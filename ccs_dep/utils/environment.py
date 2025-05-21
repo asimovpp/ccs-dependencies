@@ -5,6 +5,8 @@ Environment setup utilities for CCS dependencies
 import os
 import logging
 import platform
+import tempfile
+from pathlib import Path
 
 
 class Environment:
@@ -27,54 +29,55 @@ class Environment:
     def setup_environment(self):
         """Set up environment variables based on config"""
         # Set up compiler variables
-        self.env_vars["CC"] = self.config.get("cc", "mpicc")
-        self.env_vars["CXX"] = self.config.get("cxx", "mpicxx")
-        self.env_vars["FC"] = self.config.get("fc", "mpifort")
+        self.env_vars["CC"] = str(self.config.get("cc", "mpicc"))
+        self.env_vars["CXX"] = str(self.config.get("cxx", "mpicxx"))
+        self.env_vars["FC"] = str(self.config.get("fc", "mpifort"))
         
         # Set up basic environment variables
-        install_dir = self.config.get("install_dir", os.path.expanduser("~/ccs-deps"))
-        build_dir = self.config.get("build_dir", "/tmp/build-ccs-deps")
+        install_dir = self.config.get("install_dir", "~/ccs-deps")
+        
+        # Get temporary directory in a cross-platform way
+        tmp_dir = Path(tempfile.gettempdir())
+        default_build_dir = tmp_dir / "build-ccs-deps"
+        build_dir = self.config.get("build_dir", str(default_build_dir))
         
         # Extract compiler type
         compiler_type = self.env_name.split("_")[0]  # e.g., gnu, cray
         
-        # Expand ~ in paths
-        install_dir = os.path.expanduser(install_dir)
-        build_dir = os.path.expanduser(build_dir)
+        # Expand ~ in paths and convert to Path objects
+        install_dir = Path(install_dir).expanduser()
+        build_dir = Path(build_dir).expanduser()
         
-        self.env_vars["INSTALL_DIR"] = install_dir
-        self.env_vars["BUILD_DIR"] = build_dir
+        self.env_vars["INSTALL_DIR"] = str(install_dir)
+        self.env_vars["BUILD_DIR"] = str(build_dir)
         self.env_vars["CMP"] = compiler_type
         
         # Set up dependency-specific variables
         deps_config = self.config.get("dependencies", {})
         for dep_name, dep_config in deps_config.items():
             if "version" in dep_config:
-                version = dep_config["version"]
+                version = str(dep_config["version"])
                 self.env_vars[f"{dep_name.upper()}_VERSION"] = version
                 
                 # Set specific install paths for each dependency
-                dep_install_dir = os.path.join(
-                    install_dir, 
-                    f"{dep_name}-{compiler_type}-v{version}"
-                )
-                self.env_vars[dep_name.upper()] = dep_install_dir
+                dep_install_dir = install_dir / f"{dep_name}-{compiler_type}-v{version}"
+                self.env_vars[dep_name.upper()] = str(dep_install_dir)
                 
                 # Special case for HDF5
                 if dep_name == "hdf5":
-                    self.env_vars["HDF5_ROOT"] = dep_install_dir
+                    self.env_vars["HDF5_ROOT"] = str(dep_install_dir)
         
         # Add Python path
-        python_path = os.path.join(install_dir, f"python-{compiler_type}")
+        python_path = install_dir / f"python-{compiler_type}"
         self.env_vars["PYTHONPATH"] = f"{python_path}:{os.environ.get('PYTHONPATH', '')}"
         self.env_vars["PATH"] = f"{python_path}/bin:{os.environ.get('PATH', '')}"
-        self.env_vars["PYTHONUSERBASE"] = python_path
+        self.env_vars["PYTHONUSERBASE"] = str(python_path)
         
         # Set library paths for dependencies
         ld_library_path = os.environ.get("LD_LIBRARY_PATH", "")
         for dep_var in ["PETSC", "FYAMLC", "PARHIP", "PARMETIS", "RCMF90"]:
             if dep_var in self.env_vars:
-                lib_path = os.path.join(self.env_vars[dep_var], "lib")
+                lib_path = Path(self.env_vars[dep_var]) / "lib"
                 ld_library_path = f"{lib_path}:{ld_library_path}"
         
         self.env_vars["LD_LIBRARY_PATH"] = ld_library_path
@@ -82,7 +85,7 @@ class Environment:
         # Add binary paths to PATH
         for dep_var in ["MAKEDEPF90"]:
             if dep_var in self.env_vars:
-                bin_path = os.path.join(self.env_vars[dep_var], "bin")
+                bin_path = Path(self.env_vars[dep_var]) / "bin"
                 self.env_vars["PATH"] = f"{bin_path}:{self.env_vars['PATH']}"
                 
     def get_env_vars(self):
@@ -100,7 +103,7 @@ class Environment:
     def apply(self):
         """Apply environment variables to the current process"""
         for key, value in self.env_vars.items():
-            os.environ[key] = value
+            os.environ[key] = str(value)  # Ensure all values are strings
             logging.debug(f"Set environment variable: {key}={value}")
         
     def print_environment(self):

@@ -1,32 +1,48 @@
-[tool.poetry]
-name = "ccs-dependencies"
-version = "0.1.0"
+[project]
+name = "ccs-dep"
+version = "0.1.2"
 description = "Python tools for building ASiMoV-CCS dependencies"
-authors = ["ASiMoV-CCS Team"]
-readme = "README.md"
+authors = [
+    {name = "Erich Essmann",email = "e.essmann@epcc.ed.ac.uk"}
+]
 license = "LICENSE"
+readme = "README.md"
+requires-python = "<4.0,>=3.9"
 packages = [
-    {include = "installers"},
-    {include = "utils"}
+    {include = "ccs_dep"}
+]
+dependencies = [
+    "pyyaml (>=6.0.2,<7.0.0)",
+    "distro (>=1.9.0,<2.0.0)",
+    "poetry-core (>=2.0.0,<3.0.0)",
+    "cmake (>=4.0.2,<5.0.0)",
+    "gitpython (>=3.1.44,<4.0.0)"
 ]
 
-[tool.poetry.dependencies]
-python = "^3.7"
-pyyaml = "^6.0"
-distro = {version = "^1.7.0", optional = true}
-
-[tool.poetry.extras]
-system-detection = ["distro"]
-
-[tool.poetry.scripts]
-ccs-install = "install:main"
-ccs-setup = "setup:main"
+[tool.poetry]
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.0.0"
-black = "^23.0.0"
-pylint = "^2.15.0"
+pytest = ">=8.3.5"
+pytest-mock = ">=3.14.0"
+black = ">=25.1.0"
+pylint = ">=3.3.7"
+coverage = ">=7.8.1"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+ccs-install = "ccs_dep.install:main"
+ccs-setup = "ccs_dep.setup:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+markers = [
+    "unit: mark a test as a unit test",
+    "integration: mark a test as an integration test",
+    "installer: mark a test as an installer test"
+]
