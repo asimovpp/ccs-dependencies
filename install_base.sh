@@ -2,12 +2,17 @@
 set -e
 
 export CMP=${ENV/_*/}
-source setup_$ENV.sh
+. setup_"$ENV".sh
 
-mkdir -p $BUILD_DIR
-mkdir -p $INSTALL_DIR
+echo "Environment: $ENV"
+echo "Compiler: $CMP"
+echo "Build directory: $BUILD_DIR"
+echo "Install directory: $INSTALL_DIR"
 
-bash install_scripts/install_python_pyyaml_lit.sh
+mkdir -pv $BUILD_DIR
+mkdir -pv $INSTALL_DIR
+
+#bash install_scripts/install_python_pyyaml_lit.sh
 bash install_scripts/install_makedepf90.sh
 bash install_scripts/install_fyaml_c.sh
 bash install_scripts/install_hdf5.sh

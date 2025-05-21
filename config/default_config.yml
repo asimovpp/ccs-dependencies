@@ -1,0 +1,31 @@
+# Default configuration for CCS dependencies
+install_dir: ~/ccs-deps
+build_dir: /tmp/build-ccs-deps
+
+# Dependency versions
+dependencies:
+  adios2:
+    version: 2.10.1
+  parhip:
+    version: 3.14
+  petsc:
+    version: 3.21.2
+  hdf5:
+    version: 1.14.4.3
+  fyaml_c:
+    version: 0.2.5
+
+# Default installation order
+installation_order:
+  - makedepf90
+  - fyaml_c
+  - hdf5
+  - adios2
+  - petsc
+  - parhip
+  - parmetis
+  - rcm_f90
+  - python_deps
+
+# Build options
+parallel_jobs: 16

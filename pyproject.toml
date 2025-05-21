@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "ccs-dependencies"
+version = "0.1.0"
+description = "Python tools for building ASiMoV-CCS dependencies"
+authors = ["ASiMoV-CCS Team"]
+readme = "README.md"
+license = "LICENSE"
+packages = [
+    {include = "installers"},
+    {include = "utils"}
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+pyyaml = "^6.0"
+distro = {version = "^1.7.0", optional = true}
+
+[tool.poetry.extras]
+system-detection = ["distro"]
+
+[tool.poetry.scripts]
+ccs-install = "install:main"
+ccs-setup = "setup:main"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0.0"
+black = "^23.0.0"
+pylint = "^2.15.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

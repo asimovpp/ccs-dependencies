@@ -1,0 +1,19 @@
+# Ubuntu with GNU compilers configuration
+cc: mpicc
+cxx: mpicxx
+fc: mpifort
+
+# System packages to install
+system_packages:
+  - yacc
+  - flex
+  - cmake
+  - openmpi-bin
+  - libopenmpi-dev
+
+# Python packages to install
+python_packages:
+  - lit
+  - flinter
+  - fprettify
+  - pyyaml

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export INSTALL_DIR=
-export BUILD_DIR=/tmp/build-ccs-deps/
+export INSTALL_DIR="${INSTALL_DIR:-$HOME/ccs-deps}"
+export BUILD_DIR="${TMPDIR:-${TEMP:-${TMP:-/tmp}}}"/build-ccs-deps
 
 export ADIOS2_VERSION=2.10.1
 export PARHIP_VERSION=3.14
