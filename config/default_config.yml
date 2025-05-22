@@ -7,7 +7,7 @@ dependencies:
   adios2:
     version: 2.10.1
   parhip:
-    version: 3.14
+    version: 3.19
   petsc:
     version: 3.21.2
   hdf5:

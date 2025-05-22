@@ -39,7 +39,7 @@ class PythonDepsInstaller(BaseInstaller):
             self.dep_install_dir = self.env_vars.get("PYTHON_DEPS")
             
         # Get the list of dependencies to install
-        self.dependencies = self.dep_config.get("packages", ["pyyaml", "lit"])
+        self.dependencies = self.dep_config.get("packages", ["pyyaml", "lit", "flinter", "fprettify"])
         
     def download(self):
         """
