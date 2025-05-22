@@ -24,7 +24,7 @@ class TestPythonDepsInstaller(BaseInstallerTest):
         
         # Update configuration
         self.config["dependencies"]["python_deps"] = {
-            "packages": ["pyyaml", "lit"]
+            "packages": ["pyyaml", "lit", 'flinter', 'fprettify']
         }
         
     def test_python_deps_installer_prepare(self):
@@ -44,7 +44,7 @@ class TestPythonDepsInstaller(BaseInstallerTest):
         
         # Verify expected values
         assert installer.name == "python_deps"
-        assert installer.dependencies == ["pyyaml", "lit"]
+        assert installer.dependencies == ["pyyaml", "lit", 'flinter', 'fprettify']
     
     def test_python_deps_installer_download(self):
         """Test Python dependencies installer download method"""

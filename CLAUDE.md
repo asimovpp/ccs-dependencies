@@ -79,8 +79,13 @@ poetry run ccs-install --env gnu_macos
 # Install specific dependencies
 poetry run ccs-install --dependencies hdf5,petsc
 
-# Configure environment for building CCS
+# Configure environment for building CCS (Bash)
+# This also activates the Python virtual environment
 eval $(poetry run ccs-setup --env gnu_macos)
+
+# Configure environment for building CCS (Fish)
+# This also activates the Python virtual environment
+poetry run ccs-setup --env gnu_macos --format fish | source
 
 # Show version information
 poetry run ccs-install --version
@@ -95,7 +100,14 @@ Without Poetry:
 ```bash
 # Directly run the scripts
 ./install.py --env gnu_macos
+
+# Set up environment (Bash)
+# This also activates the Python virtual environment if it exists
 eval $(./setup.py --env gnu_macos)
+
+# Set up environment (Fish)
+# This also activates the Python virtual environment if it exists
+./setup.py --env gnu_macos --format fish | source
 ```
 
 ## Legacy Bash Scripts
@@ -194,14 +206,18 @@ make all
 1. Install Poetry: `curl -sSL https://install.python-poetry.org | python3 -`
 2. Install dependencies: `poetry install`
 3. Run installer: `poetry run ccs-install [--env <environment>]`
-4. Configure environment: `eval $(poetry run ccs-setup [--env <environment>])`
+4. Configure environment (this also activates the Python virtual environment):
+   - Bash: `eval $(poetry run ccs-setup [--env <environment>])`
+   - Fish: `poetry run ccs-setup [--env <environment>] --format fish | source`
 5. Clone and build the main CCS project
 
 ## Installation Workflow (Python Method without Poetry)
 
 1. Install Python requirements: `pip install -r requirements.txt`
 2. Run `./install.py [--env <environment>]` to install all dependencies
-3. Configure environment with `eval $(./setup.py [--env <environment>])`
+3. Configure environment (this also activates the Python virtual environment if it exists):
+   - Bash: `eval $(./setup.py [--env <environment>])`
+   - Fish: `./setup.py [--env <environment>] --format fish | source`
 4. Clone and build the main CCS project
 
 ## Installation Workflow (Bash Method)
@@ -273,3 +289,37 @@ The Python implementation includes improved error handling:
 - Robust Git operations with GitPython for repository cloning
 - Fallback mechanisms for download operations (wget, curl, Python urllib)
 - Path handling with pathlib for cross-platform compatibility
+
+## Code Style and Formatting
+
+- Python code follows PEP 8 style guidelines
+- Use Black formatter for consistent code style: `poetry run black .`
+- Use meaningful variable names and add docstrings to functions
+- Follow the installer pattern established in `ccs_dep/installers/base.py`
+- Add type hints to function parameters and return values
+- Include proper error handling with try/except blocks
+- Log operations with appropriate detail level
+
+## Common Issues and Solutions
+
+### Poetry Installation
+
+If you encounter issues installing Poetry:
+```bash
+# Alternative installation method
+pip install poetry
+```
+
+### Compilation Issues
+
+- Check that all required system dependencies are installed
+- Ensure proper compiler versions are available
+- Verify that environment variables are set correctly
+- Check the logs in the build directory for detailed error messages
+
+### Installers Failing
+
+- Run with `--debug` flag to get more detailed logs
+- Check system compatibility with the dependency
+- Verify network connectivity for downloading source code
+- Ensure adequate disk space in build and install directories
