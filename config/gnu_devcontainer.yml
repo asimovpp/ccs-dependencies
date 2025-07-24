@@ -3,7 +3,7 @@ cc: mpicc
 cxx: mpicxx
 fc: mpifort
 
-install_dir: ~/Development/ccs-libs
+install_dir: /workspaces/ccs-libs
 
 # System packages to install
 system_packages:
