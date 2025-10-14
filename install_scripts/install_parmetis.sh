@@ -1,7 +1,12 @@
 set -e
 
 source setup_${ENV}.sh
-INSTALL_DIR=$PARMETIS
+if [[ "$1" == "32bit" ]]
+then
+    INSTALL_DIR=$PARMETIS_32bit
+else
+    INSTALL_DIR=$PARMETIS
+fi
 cp patch/gklib_force_fpic.patch $BUILD_DIR/
 cd $BUILD_DIR
 
@@ -18,7 +23,12 @@ cd ..
 
 git clone https://github.com/KarypisLab/METIS.git metis
 cd metis
-make config shared=1 cc=${CC} prefix=$INSTALL_DIR gklib_path=$INSTALL_DIR i64=1
+if [[ "$1" == "32bit" ]]
+then
+    make config shared=1 cc=${CC} prefix=$INSTALL_DIR gklib_path=$INSTALL_DIR i32=1
+else
+    make config shared=1 cc=${CC} prefix=$INSTALL_DIR gklib_path=$INSTALL_DIR i64=1
+fi
 make install -j16
 cd ..
 
