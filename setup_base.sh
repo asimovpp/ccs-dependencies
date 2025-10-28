@@ -1,19 +1,28 @@
 #!/bin/bash
 
 export INSTALL_DIR=
-export BUILD_DIR=/tmp/build-ccs-deps/
+export BUILD_DIR=/tmp/build-ccs-deps_$CMP/
 
-export ADIOS2_VERSION=2.10.1
-export PARHIP_VERSION=3.14
-export PETSC_VERSION=3.21.2
-export HDF5_VERSION=1.14.4.3
+export ADIOS2_VERSION=2.10.2
+export PARHIP_VERSION=3.19
+export PETSC_VERSION=3.23.7
+export HDF5_VERSION=1.14.6
 export FYAMLC_VERSION=0.2.5
 
 export PYTHONPATH=$PYTHONPATH:$INSTALL_DIR/python-$CMP
 export PATH=$PATH:$INSTALL_DIR/python-$CMP/bin
 export PYTHONUSERBASE=$INSTALL_DIR/python-$CMP
 
-export PETSC=$INSTALL_DIR/petsc-$CMP-v$PETSC_VERSION
+if [[ "$1" == "single" ]]
+then
+    echo SINGLE
+    export PETSC=$INSTALL_DIR/petsc-single-$CMP-v$PETSC_VERSION
+    export PETSC_PRECISION=single
+else
+    echo DOUBLE
+    export PETSC=$INSTALL_DIR/petsc-$CMP-v$PETSC_VERSION
+    export PETSC_PRECISION=double
+fi
 export PETSC_ROOT=$PETSC
 export PETSC_DIR=$PETSC
 export LD_LIBRARY_PATH=${PETSC}/lib:$LD_LIBRARY_PATH
