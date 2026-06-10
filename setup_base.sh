@@ -5,7 +5,7 @@ export BUILD_DIR=/tmp/build-ccs-deps/
 
 export ADIOS2_VERSION=2.10.1
 export PARHIP_VERSION=3.14
-export PETSC_VERSION=3.23.4
+export PETSC_VERSION=3.23.7
 export HDF5_VERSION=1.14.4.3
 export FYAMLC_VERSION=0.2.5
 export CALIPER_VERSION=2.14.0
