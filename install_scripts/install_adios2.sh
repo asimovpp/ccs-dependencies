@@ -7,6 +7,7 @@ cd $BUILD_DIR
 
 git clone --depth 1 --branch v$ADIOS2_VERSION https://github.com/ornladios/ADIOS2.git adios2
 cd adios2
+git apply ../../adios2_force_fpic.patch
 
 mkdir build
 cd build
