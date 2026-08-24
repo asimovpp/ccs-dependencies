@@ -19,4 +19,4 @@ bash install_scripts/install_parmetis.sh 32bit
 bash install_scripts/install_parmetis.sh 64bit
 bash install_scripts/install_rcm_f90.sh
 bash install_scripts/install_caliper.sh
-# bash install_scripts/install_likwid.sh
+bash install_scripts/install_likwid.sh
