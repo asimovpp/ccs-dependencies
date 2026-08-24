@@ -3,11 +3,14 @@ set -e
 source ${PWD}/setup_${ENV}.sh
 
 INSTALL_DIR=$ADIOS2
+
+cp patch/adios2_silence_addvarstring.patch $BUILD_DIR/
+
 cd $BUILD_DIR
 
 git clone --depth 1 --branch v$ADIOS2_VERSION https://github.com/ornladios/ADIOS2.git adios2
 cd adios2
-git apply ../../adios2_force_fpic.patch
+git apply ../adios2_silence_addvarstring.patch
 
 mkdir build
 cd build
