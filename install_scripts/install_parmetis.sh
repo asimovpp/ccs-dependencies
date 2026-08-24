@@ -1,6 +1,6 @@
 set -e
 
-source setup_${ENV}.sh
+source ${PWD}/setup_${ENV}.sh
 if [[ "$1" == "32bit" ]]
 then
     INSTALL_DIR=$PARMETIS_32bit

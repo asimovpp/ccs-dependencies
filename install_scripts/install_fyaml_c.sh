@@ -1,6 +1,6 @@
 set -e
 
-source setup_${ENV}.sh
+source ${PWD}/setup_${ENV}.sh
 unset HDF5_ROOT
 unset HDF5_DIR
 unset PETSC_ROOT

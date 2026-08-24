@@ -1,7 +1,7 @@
 set -e
 
+source ${PWD}/setup_${ENV}.sh
 
-source setup_$ENV.sh
 
 INSTALL_DIR=$PETSC
 cd $BUILD_DIR

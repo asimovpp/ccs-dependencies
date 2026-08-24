@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+export PWD=$(pwd)
 export CMP=${ENV/_*/}
 source setup_$ENV.sh
 

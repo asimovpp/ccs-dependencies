@@ -1,6 +1,6 @@
 set -e
 
-source setup_$ENV.sh
+source ${PWD}/setup_${ENV}.sh
 
 INSTALL_DIR=$HDF5_ROOT
 cd $BUILD_DIR

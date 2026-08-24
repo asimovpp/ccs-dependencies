@@ -1,6 +1,6 @@
 set -e
 
-source setup_$ENV.sh
+source ${PWD}/setup_${ENV}.sh
 
 INSTALL_DIR=$ADIOS2
 cd $BUILD_DIR
