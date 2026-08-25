@@ -15,7 +15,7 @@ mkdir -p build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release \
       -DHDF5_ENABLE_PARALLEL=ON \
       -DBUILD_SHARED_LIBS=ON \
-      -DHDF5_ENABLE_SUBFILING_VFD=ON \
+      -DHDF5_ENABLE_SUBFILING_VFD=OFF \
       ..
 
 # compile
