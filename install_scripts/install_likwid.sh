@@ -8,7 +8,7 @@ cd $BUILD_DIR
 # defaults
 export lik_cmp="GCC"
 export CC=gcc
-export FC=ifort
+export FC=ifx
 export FCFLAGS="-module ./"
 
 if [ "$CMP" = "cray" ]; then
@@ -19,7 +19,7 @@ if [ "$CMP" = "cray" ]; then
 elif [ "$CMP" = "gnu" ]; then
 	export lik_cmp=GCC
 	export CC=cc
-	export FC=ftn
+	export FC=gfortran
 	export FCFLAGS="-J ./ -fsyntax-only"
 fi
 

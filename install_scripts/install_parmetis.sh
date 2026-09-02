@@ -29,8 +29,12 @@ then
 else
     make config shared=1 cc=${CC} prefix=$INSTALL_DIR gklib_path=$INSTALL_DIR i64=1
 fi
+
 make install -j16
-cp ${INSTALL_DIR}/lib64/* ${INSTALL_DIR}/lib
+if [[ -d ${INSTALL_DIR}/lib64 ]]
+then
+    cp ${INSTALL_DIR}/lib64/* ${INSTALL_DIR}/lib
+fi
 cd ..
 
 git clone https://github.com/KarypisLab/ParMETIS.git parmetis

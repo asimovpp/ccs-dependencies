@@ -10,7 +10,7 @@ export PETSC_DIR=$(pwd)
 
 # regular build
 INSTALL_DIR=$PETSC
-./configure --download-fblaslapack=yes --with-cc=${CC} --with-fc=${FC} --with-cxx=${CXX} --with-fortran-datatypes=1 --with-fortran-interfaces=1 --with-fortran-bindings=1 --with-fortran-kernels=1 --with-debugging=0 --prefix=$INSTALL_DIR
+./configure --download-fblaslapack=yes --with-cc=${CC} --with-fc=${FC} --with-cxx=${CXX} --with-fortran-datatypes=1 --with-fortran-interfaces=1 --with-fortran-bindings=1 --with-fortran-kernels=1 --with-debugging=0 --with-batch=1 --prefix=$INSTALL_DIR
 make -j 16
 make install
 make clean
