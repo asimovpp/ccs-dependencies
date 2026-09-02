@@ -1,7 +1,7 @@
 set -e
 
 # Setup
-source setup_${ENV}.sh
+source ${PWD}/setup_${ENV}.sh
 
 INSTALL_DIR=${RCMF90}
 cd $BUILD_DIR

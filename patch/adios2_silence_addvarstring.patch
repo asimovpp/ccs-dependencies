@@ -1,0 +1,15 @@
+diff --git a/source/adios2/toolkit/interop/hdf5/HDF5Common.cpp b/source/adios2/toolkit/interop/hdf5/HDF5Common.cpp
+index 2e97a13..82d5e01 100644
+--- a/source/adios2/toolkit/interop/hdf5/HDF5Common.cpp
++++ b/source/adios2/toolkit/interop/hdf5/HDF5Common.cpp
+@@ -545,10 +545,6 @@ void HDF5Common::AddVarString(core::IO &io, std::string const &name, hid_t datas
+         {
+             if (ndims != 2)
+             {
+-                printf("WARNING: IO is not accepting definition of array "
+-                       "string variable: %s. dim: %d "
+-                       "Skipping! \n",
+-                       name.c_str(), ndims);
+                 return;
+             }
+ 

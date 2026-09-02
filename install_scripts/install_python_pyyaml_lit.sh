@@ -1,7 +1,7 @@
 set -e
 
-source setup_${ENV}.sh
+source ${PWD}/setup_${ENV}.sh
 
+pip install --user --upgrade pip
 pip install --user pyyaml
 pip install --user lit
-
