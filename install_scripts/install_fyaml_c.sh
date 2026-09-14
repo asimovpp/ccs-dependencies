@@ -1,6 +1,6 @@
 set -e
 
-source setup_${ENV}.sh
+source ${PWD}/setup_${ENV}.sh
 unset HDF5_ROOT
 unset HDF5_DIR
 unset PETSC_ROOT
@@ -14,7 +14,8 @@ cd fyaml
 
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -DBUILD_SHARED_LIBS=Yes ..
+# CMAKE minimum version to fix: https://github.com/yaml/libyaml/pull/314
+cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -DBUILD_SHARED_LIBS=Yes -DCMAKE_POLICY_VERSION_MINIMUM=3.5 ..
 cmake --build .
 
 mkdir -p $INSTALL_DIR/{include,lib}

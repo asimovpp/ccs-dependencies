@@ -9,6 +9,6 @@ module load cray-python
 module load cmake
 module list
 
-export CC=mpicc
-export CXX=mpicxx
-export FC=mpifort
+export CC=cc
+export CXX=CC
+export FC=ftn

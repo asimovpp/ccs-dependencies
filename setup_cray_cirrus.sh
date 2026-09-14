@@ -1,8 +1,8 @@
 
-export CMP=gnu
+export CMP=cray
 source "$(dirname ${BASH_SOURCE[0]:-$0})"/setup_base.sh
 
-module load PrgEnv-gnu
+module load PrgEnv-cray craype-network-ofi craype-x86-turin
 module load cray-python
 #module load cray-hdf5-parallel
 #module load petsc
