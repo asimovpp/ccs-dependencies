@@ -12,4 +12,4 @@ cmake --build --preset build-cirrus-gnu-release
 cmake --install out/build/cirrus-gnu-release/ --prefix=$PARHIP_COL
 
 cd ../..
-rm -rf parhip
+rm -rf KaHIP
