@@ -31,4 +31,4 @@ make COMPILER=$lik_cmp CC=$CC FC=$FC FCFLAGS="$FCFLAGS" PREFIX=$INSTALL_DIR FORT
 make COMPILER=$lik_cmp CC=$CC FC=$FC FCFLAGS="$FCFLAGS" PREFIX=$INSTALL_DIR FORTRAN_INTERFACE=true ACCESSMODE=direct install
 
 cd ..
-rf -rf likwid-*
+rm -rf likwid-*
