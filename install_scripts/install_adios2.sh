@@ -35,4 +35,5 @@ make -j 16
 make install
 
 cd ../..
+rm adios2_silence_addvarstring.patch
 rm -rf adios2
