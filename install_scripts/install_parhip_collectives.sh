@@ -7,7 +7,7 @@ cd $BUILD_DIR
 git clone --depth 1 --branch mpi-collective https://github.com/eessmann/KaHIP.git
 cd KaHIP
 
-cmake --preset cirrus-gnu-release
+cmake --preset cirrus-gnu-release -D CMAKE_INSTALL_LIBDIR=lib
 cmake --build --preset build-cirrus-gnu-release
 cmake --install out/build/cirrus-gnu-release/ --prefix=$PARHIP_COL
 
