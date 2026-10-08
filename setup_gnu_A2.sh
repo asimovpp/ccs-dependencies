@@ -1,4 +1,4 @@
-
+export CMP=gnu
 source "$(dirname ${BASH_SOURCE[0]:-$0})"/setup_base.sh
 
 module load PrgEnv-gnu
