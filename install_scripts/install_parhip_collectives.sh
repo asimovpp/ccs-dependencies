@@ -9,7 +9,7 @@ cd KaHIP
 
 cmake --preset cirrus-gnu-release -D CMAKE_INSTALL_LIBDIR=lib
 cmake --build --preset build-cirrus-gnu-release
-cmake --install out/build/cirrus-gnu-release/ --prefix=$PARHIP_COL
+cmake --install out/build/cirrus-gnu-release/ --prefix=$INSTALL_DIR
 
 cd ../..
 rm -rf KaHIP
