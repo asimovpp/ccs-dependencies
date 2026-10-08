@@ -2,21 +2,25 @@
 set -e
 
 export PWD=$(pwd)
+# Set $ENV through the command line or here:
+#export ENV=cray_cirrus
 export CMP=${ENV/_*/}
+export SYSTEM=${ENV/*_/}
 source setup_$ENV.sh
 
 mkdir -p $BUILD_DIR
 mkdir -p $INSTALL_DIR
 
-bash install_scripts/install_python_pyyaml_lit.sh
-bash install_scripts/install_makedepf90.sh
-bash install_scripts/install_fyaml_c.sh
-bash install_scripts/install_hdf5.sh
-bash install_scripts/install_adios2.sh
-bash install_scripts/install_petsc.sh
-bash install_scripts/install_parhip.sh
-bash install_scripts/install_parmetis.sh 32bit
+#bash install_scripts/install_python_pyyaml_lit.sh
+#bash install_scripts/install_makedepf90.sh
+#bash install_scripts/install_fyaml_c.sh
+#bash install_scripts/install_hdf5.sh
+#bash install_scripts/install_adios2.sh
+#bash install_scripts/install_petsc.sh
+#bash install_scripts/install_parhip.sh
+bash install_scripts/install_parhip_collectives.sh
+#bash install_scripts/install_parmetis.sh 32bit
 # bash install_scripts/install_parmetis.sh 64bit
-bash install_scripts/install_rcm_f90.sh
-bash install_scripts/install_caliper.sh
-bash install_scripts/install_likwid.sh
+#bash install_scripts/install_rcm_f90.sh
+#bash install_scripts/install_caliper.sh
+#bash install_scripts/install_likwid.sh
