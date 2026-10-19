@@ -6,6 +6,9 @@ INSTALL_DIR=$HDF5_ROOT
 cd $BUILD_DIR
 
 git clone --depth 1 --branch $HDF5_VERSION https://github.com/HDFGroup/hdf5.git
+# for versions before 2.0.0 use:
+#git clone --depth 1 --branch hdf5_$HDF5_VERSION https://github.com/HDFGroup/hdf5.git
+
 cd hdf5
 
 # ./configure --enable-parallel --enable-subfiling-vfd=yes --prefix=$INSTALL_DIR
