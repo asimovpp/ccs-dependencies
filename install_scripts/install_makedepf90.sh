@@ -2,7 +2,7 @@ set -e
 
 source ${PWD}/setup_${ENV}.sh
 
-INSTALL_DIR=$MAKEDEPF90-$CMP
+INSTALL_DIR=$MAKEDEPF90
 cd "$BUILD_DIR"
 
 git clone https://salsa.debian.org/science-team/makedepf90.git
