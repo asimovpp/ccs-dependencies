@@ -7,3 +7,6 @@ source "$(dirname ${BASH_SOURCE[0]:-$0})"/setup_base.sh
 export CC=mpicc
 export FC=mpifort
 export CXX=mpicxx
+
+# there is one-time setup needed for likwid, please see:
+# https://git.ecdf.ed.ac.uk/asimov/asimov-ccs/-/wikis/CI/Likwid
